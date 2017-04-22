@@ -84,7 +84,7 @@ u0          = zeros(nc,1);
 
 fprintf('Solving ART reconstruction ... (it takes around 1 s)\n');
 tic; 
-uART = ARTReconstruction(JacMatrix,data,relaxParam,numIterART,u0); 
+uART = ARTReconstruction(JacMatrix, data, numIterART, u0, relaxParam); 
 toc
 uART     = reshape(uART,N);
 %  h = Plot2DMapsGridSolution(uART,X,Y,Z,3); colorbar;
@@ -132,7 +132,7 @@ h = waitbar(0,'Solving ART-SB reconstruction') ;
 tic
 for it = 1:numIter
     % ART reconstruction step: Iterative linear solver
-    sol = ARTReconstruction(JacMatrix,data,relaxParam,numIterART,uARTSB(:)); 
+    sol = ARTReconstruction(JacMatrix, data, numIterART, uARTSB(:), relaxParam); 
     solGrid     = reshape(sol,N);   
 
     % SB denoising step
