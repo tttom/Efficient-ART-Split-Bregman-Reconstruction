@@ -1,4 +1,4 @@
-function u   = ARTReconstruction(A,d,relaxParam,numIterART,u)
+function u = ARTReconstruction(A,d,relaxParam,numIterART,u)
 % u   = ARTReconstruction(A,d,relaxParam,numIterART,u)
 %
 % Algebraic reconstruction technique, also known as Kaczmarz method
