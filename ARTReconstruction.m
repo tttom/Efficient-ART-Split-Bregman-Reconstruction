@@ -66,19 +66,18 @@ function [x, errors, xNorms] = ARTReconstruction(A, b, nbIterations, x0, relaxat
         xNorms = zeros(1, nbIterations);
     end
     
+    % precalculate the equation sqd weights
+    weights = relaxationParameter./sum(abs(A).^2, 2); % column vectors are more efficient
+        
     % replace with transpose for efficiency
     A = A.';
-    
-    % precalculate the equation sqd weights
-    equationSqdNorms = sum(abs(A).^2,1);
-    
-    Anorm = A*spdiags(relaxationParameter./equationSqdNorms.', 0, nbEquations, nbEquations);
     
     % do the Kaczmarz iteration
     x = x0;
     for itIdx = 1:nbIterations,
-        for eqnIdx = 1:nbEquations,
-            x = x + (b(eqnIdx)-A(:, eqnIdx)'*x)*Anorm(:,eqnIdx);
+        for eqnIdx = 1:nbEquations, % should actually be chosen randomly with a distribution proportional to equationSqdNorms
+            V = A(:, eqnIdx);
+            x = x + (b(eqnIdx)-V'*x)*weights(eqnIdx)*V;
         end
         if wantPerformanceFigures,
             errors(itIdx) = norm(b-A.'*x);
